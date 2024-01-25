@@ -1,4 +1,3 @@
-#!/usr/bin/bash
 #!/usr/bin/env bash
 
 goto_help() {
