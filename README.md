@@ -12,7 +12,7 @@ It is also secure and can be used as an alternative to `rpg-urandom.sh`
 ## rpg-bash.sh
 ### Scenario: `/dev/urandom`, `/dev/random`, and `/usr/bin/openssl` are unavailable
 `rpg-bash.sh` is a script that only uses Bash's built-in functions to generate random strings. \
-This means that no external utilities (save for `nproc`) are needed to run it; only the Bash shell is required. \
+This means that no external utilities (save for `nproc`) are needed to run it; only the Bash shell is required.
 ### Note #1
 You can remove the `nproc` dependency by commenting out the `Threads=$(( $(nproc) / 2 ))` variable.
 ### Note #2
