@@ -6,7 +6,7 @@ A collection of scripts that generate random strings of text, each accounting fo
 This is much faster compared to `rpg-bash.sh` and can generate thousands of new passwords in seconds. \
 It is also the most secure option and should preferred over `rpg-bash.sh`.
 ## rpg-openssl.sh
-### Scenario: `/dev/random` and `/dev/urandom` is unavailable
+### Scenario: `/dev/random` and `/dev/urandom` are unavailable
 `rpg-openssl.sh` uses the RNG found in OpenSSL. \
 It is also secure and can be used as an alternative to `rpg-urandom.sh`
 ## rpg-bash.sh
