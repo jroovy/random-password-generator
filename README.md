@@ -1,5 +1,5 @@
 # Random Password Generator
-A collection of scripts that generate random strings of text, each accounting for a different scenario.
+A collection of scripts that generate random strings of text, each made for a different scenario.
 ## rpg-urandom.sh
 ### Scenario: `/dev/random` or `/dev/urandom` is available
 `rpg-urandom.sh` uses the built-in RNG present on most Linux/Unix systems (including Android). \
@@ -21,3 +21,6 @@ Simply change `#!/bin/bash` at the start of the script to `#!/bin/zsh` and it sh
 ### Note #3
 The RNG function found within Bash and ZSH are **less secure** than the alternatives listed above. \
 Only use this if the alternatives are not viable.
+## What if none of them are viable?
+I heard cats are great at generating secure random passwords.\
+Just place them on your keyboard and watch the magic happen :P
