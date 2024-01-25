@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#!/usr/bin/bash
 
 goto_help() {
 printf "
