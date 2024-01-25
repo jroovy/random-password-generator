@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script is compatible with zsh
-# Replace #!/bin/bash above with #!/bin/zsh
+# Replace 'bash' above with 'zsh'
 
 # https://unix.stackexchange.com/questions/38172/are-all-bash-scripts-compatible-with-zsh
 if [[ -n $ZSH_VERSION ]]; then
