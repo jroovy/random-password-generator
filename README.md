@@ -17,7 +17,7 @@ This means that no external utilities (save for `nproc`) are needed to run it; o
 You can remove the `nproc` dependency by commenting out the `Threads=$(( $(nproc) / 2 ))` variable.
 ### Note #2
 This script is also compatible with `zsh`. \
-Simply change `#!/bin/bash` at the start of the script to `#!/bin/zsh` and it should work without issues.
+Simply change `#!/usr/bin/env bash` at the start of the script to `#!/usr/bin/env zsh` and it should work without issues.
 ### Note #3
 The RNG function found within Bash and ZSH are **less secure** than the alternatives listed above. \
 Only use this if the alternatives are not viable.
