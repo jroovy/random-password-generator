@@ -21,6 +21,9 @@ Simply change `#!/usr/bin/env bash` at the start of the script to `#!/usr/bin/en
 ### Note #3
 The RNG function found within Bash and ZSH are **less secure** than the alternatives listed above. \
 Only use this if the alternatives are not viable.
+### Note #4
+`rpg-bash.sh` was made with performance in mind. \
+As a result, some parts of the script may appear badly written or redundant.
 ## What if none of them are viable?
 I heard cats are great at generating secure random passwords.\
 Just place them on your keyboard and watch the magic happen :P
