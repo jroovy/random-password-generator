@@ -73,8 +73,7 @@ alnumUpper=(
 )
 
 alnum=(
-	"${numeric[@]}"
-	"${alphabetLower[@]}"
+	"${alnumLower[@]}"
 	"${alphabetUpper[@]}"
 )
 
