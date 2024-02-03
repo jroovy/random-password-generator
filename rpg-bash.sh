@@ -85,7 +85,8 @@ ascii=(
 # Delete base arrays to save memory
 unset \
 	numeric \
-	alphabet{Lower,Upper} \
+	alphabetLower \
+	alphabetUpper \
 	symbols
 
 # Assign user inputs to variables
