@@ -27,43 +27,60 @@ if [[ -z $@ ]]; then
 	exit
 fi
 
+# Base arrays of characters
+numeric=(
+\0	\1	\2	\3	\4	\5	\6	\7	\8	\9
+)
+
+alphabetLower=(
+\a	\b	\c	\d	\e	\f	\g	\h	\i	\j
+\k	\l	\m	\n	\o	\p	\q	\r	\s	\t
+\u	\v	\w	\x	\y	\z
+)
+
+alphabetUpper=(
+\A	\B	\C	\D	\E	\F	\G	\H	\I	\J
+\K	\L	\M	\N	\O	\P	\Q	\R	\S	\T
+\U	\V	\W	\X	\Y	\Z
+)
+
+symbols=(
+\!	\"	\#	\$	\%	\&	\'	\(	\)	\*
+\+	\,	\-	\.	\/	\:	\;	\<	\=	\>
+\?	\@	\[	\\	\]	\^	\_	\`	\{	\|
+\}	\~
+)
+
 # Arrays containing character ranges for each type
 hexLower=(
-\0	\1	\2	\3	\4	\5	\6	\7	\8	\9
-\a	\b	\c	\d	\e	\f
+	"${numeric[@]}"
+	"${alphabetLower[@]:0:6}"
 )
 
 hexUpper=(
-\0	\1	\2	\3	\4	\5	\6	\7	\8	\9
-\A	\B	\C	\D	\E	\F
+	"${numeric[@]}"
+	"${alphabetUpper[@]:0:6}"
 )
 
 alnumLower=(
-\0	\1	\2	\3	\4	\5	\6	\7	\8	\9	\a	\b	\c	\d	\e	\f
-\g	\h	\i	\j	\k	\l	\m	\n	\o	\p	\q	\r	\s	\t	\u	\v
-\w	\x	\y	\z
+	"${numeric[@]}"
+	"${alphabetLower[@]}"
 )
 
 alnumUpper=(
-\0	\1	\2	\3	\4	\5	\6	\7	\8	\9	\A	\B	\C	\D	\E	\F
-\G	\H	\I	\J	\K	\L	\M	\N	\O	\P	\Q	\R	\S	\T	\U	\V
-\W	\X	\Y	\Z
+	"${numeric[@]}"
+	"${alphabetUpper[@]}"
 )
 
 alnum=(
-\0	\1	\2	\3	\4	\5	\6	\7	\8	\9	\a	\b	\c	\d	\e	\f
-\g	\h	\i	\j	\k	\l	\m	\n	\o	\p	\q	\r	\s	\t	\u	\v
-\w	\x	\y	\z	\A	\B	\C	\D	\E	\F	\G	\H	\I	\J	\K	\L
-\M	\N	\O	\P	\Q	\R	\S	\T	\U	\V	\W	\X	\Y	\Z
+	"${numeric[@]}"
+	"${alphabetLower[@]}"
+	"${alphabetUpper[@]}"
 )
 
 ascii=(
-\0	\1	\2	\3	\4	\5	\6	\7	\8	\9	\a	\b	\c	\d	\e	\f
-\g	\h	\i	\j	\k	\l	\m	\n	\o	\p	\q	\r	\s	\t	\u	\v
-\w	\x	\y	\z	\A	\B	\C	\D	\E	\F	\G	\H	\I	\J	\K	\L
-\M	\N	\O	\P	\Q	\R	\S	\T	\U	\V	\W	\X	\Y	\Z	\!	\"
-\#	\$	\%	\&	\'	\(	\)	\*	\+	\,	\-	\.	\/	\:	\;	\<
-\=	\>	\?	\@	\[	\\	\]	\^	\_	\`	\{	\|	\}	\~
+	"${alnum[@]}"
+	"${symbols[@]}"
 )
 
 # Assign user inputs to variables
