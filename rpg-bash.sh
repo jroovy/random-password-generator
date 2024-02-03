@@ -86,7 +86,6 @@ ascii=(
 unset \
 	numeric \
 	alphabet{Lower,Upper} \
-	alnum{Lower,Upper} \
 	symbols
 
 # Assign user inputs to variables
