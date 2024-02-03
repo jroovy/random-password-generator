@@ -82,6 +82,13 @@ ascii=(
 	"${symbols[@]}"
 )
 
+# Delete base arrays to save memory
+unset \
+	numeric \
+	alphabet{Lower,Upper} \
+	alnum{Lower,Upper} \
+	symbols
+
 # Assign user inputs to variables
 Type=${@:1:1}
 Length=${@:2:1}
