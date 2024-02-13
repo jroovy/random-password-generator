@@ -110,54 +110,54 @@ LastThread=$(( Threads - 1 ))
 hexLower() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
-			tempLength+="${hexLower[ (( RANDOM % 16 )) ]}"
+			tempLength+=${hexLower[ (( RANDOM % 16 )) ]}
 		done
-		echo "${tempLength}"
+		echo "$tempLength"
 		unset tempLength
 	done
 }
 hexUpper() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
-			tempLength+="${hexUpper[ (( RANDOM % 16 )) ]}"
+			tempLength+=${hexUpper[ (( RANDOM % 16 )) ]}
 		done
-		echo "${tempLength}"
+		echo "$tempLength"
 		unset tempLength
 	done
 }
 alnumLower() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
-			tempLength+="${alnumLower[ (( RANDOM % 36 )) ]}"
+			tempLength+=${alnumLower[ (( RANDOM % 36 )) ]}
 		done
-		echo "${tempLength}"
+		echo "$tempLength"
 		unset tempLength
 	done
 }
 alnumUpper() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
-			tempLength+="${alnumUpper[ (( RANDOM % 36 )) ]}"
+			tempLength+=${alnumUpper[ (( RANDOM % 36 )) ]}
 		done
-		echo "${tempLength}"
+		echo "$tempLength"
 		unset tempLength
 	done
 }
 alnum() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
-			tempLength+="${alnum[ (( RANDOM % 62 )) ]}"
+			tempLength+=${alnum[ (( RANDOM % 62 )) ]}
 		done
-		echo "${tempLength}"
+		echo "$tempLength"
 		unset tempLength
 	done
 }
 ascii() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
-			tempLength+="${ascii[ (( RANDOM % 94 )) ]}"
+			tempLength+=${ascii[ (( RANDOM % 94 )) ]}
 		done
-		echo "${tempLength}"
+		echo "$tempLength"
 		unset tempLength
 	done
 }
@@ -172,22 +172,22 @@ for (( threadLoop = 0; threadLoop < Threads; threadLoop ++ )); do
 		(( Slice += Remainder ))
 	fi
 	case $Type in
-		'1' | '1o')
+		1 | 1o)
 			hexLower &
 		;;
-		'1u')
+		1u)
 			hexUpper &
 		;;
-		'2')
+		2)
 			alnum &
 		;;
-		'2o')
+		2o)
 			alnumLower &
 		;;
-		'2u')
+		2u)
 			alnumUpper &
 		;;
-		'3')
+		3)
 			ascii &
 		;;
 	esac
