@@ -8,6 +8,31 @@ if [[ -n $ZSH_VERSION ]]; then
 	emulate sh
 fi
 
+# Assign user inputs to variables
+Type=${@:1:1}
+Length=${@:2:1}
+Rows=${@:3:1}
+
+if [[ -z $Rows ]]; then
+	Rows=1
+fi
+
+# Get amount of threads on system
+# Threads=$(nproc)
+Threads=$(( $(nproc) / 2 ))
+
+if [[ Threads -eq 0 ]]; then
+	Threads=1
+fi
+
+# Divide total rows by available threads
+Slice=$(( Rows / Threads ))
+
+# If total rows is uneven,
+# assign remainder to last thread
+Remainder=$(( Rows % Threads ))
+lastThread=$(( Threads - 1 ))
+
 help_message() {
 echo "Types:
    1  =  hexadecimal
@@ -81,31 +106,6 @@ unset \
 	alphabetUpper \
 	symbols
 
-# Assign user inputs to variables
-Type=${@:1:1}
-Length=${@:2:1}
-Rows=${@:3:1}
-
-if [[ -z $Rows ]]; then
-	Rows=1
-fi
-
-# Get amount of threads on system
-# Threads=$(nproc)
-Threads=$(( $(nproc) / 2 ))
-
-if [[ Threads -eq 0 ]]; then
-	Threads=1
-fi
-
-# Divide total rows by available threads
-Slice=$(( Rows / Threads ))
-
-# If total rows is uneven,
-# assign remainder to last thread
-Remainder=$(( Rows % Threads ))
-LastThread=$(( Threads - 1 ))
-
 # Main generation functions
 hexLower() {
 	for (( rowLoop = 0; rowLoop < Slice; rowLoop ++ )); do
@@ -167,7 +167,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT
 
 # Main logic function
 for (( threadLoop = 0; threadLoop < Threads; threadLoop ++ )); do
-	if (( threadLoop = LastThread )); then
+	if [[ threadLoop -eq lastThread ]]; then
 		# https://askubuntu.com/a/385532
 		(( Slice += Remainder ))
 	fi
