@@ -18,8 +18,8 @@ if [[ -z $Rows ]]; then
 fi
 
 # Get amount of threads on system
-Threads=$(nproc)
-# Threads=$(( $(nproc) / 2 ))
+# Threads=$(nproc)
+Threads=$(( $(nproc) / 2 ))
 
 # zsh will have duplicate output if multithreaded
 # for now, force zsh to use one thread
