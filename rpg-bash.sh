@@ -21,7 +21,7 @@ fi
 # Threads=$(nproc)
 Threads=$(( $(nproc) / 2 ))
 
-if [[ Threads -eq 0 ]]; then
+if (( Threads == 0 )); then
 	Threads=1
 fi
 
@@ -167,7 +167,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT
 
 # Main logic function
 for (( threadLoop = 0; threadLoop < Threads; threadLoop ++ )); do
-	if [[ threadLoop -eq lastThread ]]; then
+	if (( threadLoop == lastThread )); then
 		# https://askubuntu.com/a/385532
 		(( Slice += Remainder ))
 	fi
