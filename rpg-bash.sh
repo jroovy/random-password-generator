@@ -18,10 +18,12 @@ if [[ -z $Rows ]]; then
 fi
 
 # Get amount of threads on system
-# Threads=$(nproc)
-Threads=$(( $(nproc) / 2 ))
+Threads=$(nproc)
+# Threads=$(( $(nproc) / 2 ))
 
-if (( Threads == 0 )); then
+# zsh will have duplicate output if multithreaded
+# for now, force zsh to use one thread
+if (( Threads == 0 )) || [[ -n $ZSH_VERSION ]]; then
 	Threads=1
 fi
 
@@ -99,7 +101,7 @@ ascii=(
 	"${symbols[@]}"
 )
 
-# Delete base arrays to save memory
+# Delete base arrays to free up unused memory
 unset \
 	numeric \
 	alphabetLower \
@@ -163,7 +165,7 @@ ascii() {
 }
 
 # https://stackoverflow.com/questions/360201/how-do-i-kill-background-processes-jobs-when-my-shell-script-exits
-trap "trap - SIGTERM && kill -- -$$" SIGINT
+trap 'trap - SIGTERM && kill -- -$$' SIGINT
 
 # Main logic function
 for (( threadLoop = 0; threadLoop < Threads; threadLoop ++ )); do
