@@ -5,13 +5,13 @@
 
 help_message() {
 echo "Types:
-1   =  hexadecimal
-1u  =  hexadecimal, uppercase
-1o  =  hexadecimal, lowercase
-2   =  alphanumeric
-2u  =  alphanumeric, uppercase
-2o  =  alphanumeric, lowercase
-3   =  ascii
+   1  =  hexadecimal
+  1u  =  hexadecimal, uppercase
+  1o  =  hexadecimal, lowercase
+   2  =  alphanumeric
+  2u  =  alphanumeric, uppercase
+  2o  =  alphanumeric, lowercase
+   3  =  ascii
 
 Usage: $0 <type> <length> <count>
 Example: $0 2u 64 100"
