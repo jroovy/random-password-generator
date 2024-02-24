@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-goto_help() {
-printf "
-No arguments specified.
-Run \"$0 -h\" for instructions.
-
-"
-}
-
 help_message() {
 
 printf "
@@ -37,10 +29,13 @@ Character ranges:
 
 Examples:
 
+Generate a 64-character length password
+$0 64
+
 Generate 100 hexadecimal (lowercase) passwords of 64-character length
 $0 -d1o -c100 64
 
-Generate 64-character password using \"/dev/random\" instead of \"/dev/urandom\"
+Generate a 64-character password using /dev/random instead of /dev/urandom
 $0 -r 64
 
 "
@@ -107,7 +102,7 @@ do
 					;;
 				'3u')
 					#alphanumeric (uppercase)
-					charse_range='0-9A-Z'
+					charset_range='0-9A-Z'
 					;;
 				'4')
 					#base94 (all chars on keyboard)
@@ -135,7 +130,7 @@ done
 ## Empty arguments check
 
 if [[ -z $@ ]]; then
-	goto_help && exit 1
+	help_message && exit 1
 fi
 
 if [[ -z $password_length ]]; then
