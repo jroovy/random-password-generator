@@ -9,6 +9,7 @@ $0 <options> <length>
 Options:
   [ -c <num> | --count <num> ]   =  Generate N number of passwords
   [ -d <num> | --range <num> ]   =  Specify character range (see below)
+  [ -f | --fast ]                =  Generate fast but less secure passwords
   [ -h | --help ]                =  Display this help message
 
 
@@ -37,7 +38,7 @@ $0 -d1o -c100 64
 
 }
 
-ARGS=$(getopt -n random_password_generator -l count:,range:,help -o c:d:h -- "$@")
+ARGS=$(getopt -n random_password_generator -l count:,range:,fast,help -o c:d:fh -- "$@")
 eval set -- "$ARGS"
 
 while :
@@ -100,6 +101,11 @@ do
 			shift 2
 			;;
 			
+		'-f' | '--fast')
+			gen_type=1
+			shift
+			;;
+			
 		'-h' | '--help')
 			help_message && exit 0
 			shift
@@ -135,29 +141,46 @@ if [[ -z $total_count ]]; then
 	total_count=1
 fi
 
+# Check if OpenSSL is available
+# (LibreSSL doesn't respond to "set -e"; excluding for now.)
+if
+	command -v openssl > /dev/null
+then
+	useSSL='openssl'
+else
+	printf 'No compatible SSL found!\nPlease install OpenSSL.\n'
+	exit 1
+fi
+
 ## Functions
 
-gen_password() {
+infinite_gen() {
 	while true; do
-		openssl rand 2147483647
+		$useSSL rand 2147483647
 	done
+}
+
+gen_password() {
+	# https://stackoverflow.com/questions/21732248/exit-from-bash-infinite-loop-in-a-pipeline
+	if (( gen_type == 1 )); then
+		(set -e; infinite_gen) \
+		| tr -dc "$charset_range" \
+		| head -c $(( password_length * total_count ))
+	else
+		for (( current_count = 0; current_count < total_count; current_count ++ )); do
+			(set -e; infinite_gen) \
+			| tr -dc "$charset_range" \
+			| head -c "$password_length"
+		done
+	fi
 }
 
 ## Condition checks
 
-#https://stackoverflow.com/questions/21732248/exit-from-bash-infinite-loop-in-a-pipeline
-
-final_num=$(( password_length * total_count ))
-
-if [[ total_count -gt 1 ]]; then
-	(set -e; gen_password) \
-		| tr -dc "$charset_range" \
-		| head -c "$final_num" \
-		| fold -w "$password_length"
+if (( total_count > 1 )); then
+	gen_password | fold -w "$password_length"
 	printf '\n'
 else
-	(set -e; gen_password) \
-		| tr -dc "$charset_range" \
-		| head -c "$final_num"
+	gen_password
 	printf '\n'
 fi

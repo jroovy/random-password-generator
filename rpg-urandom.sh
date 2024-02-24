@@ -157,23 +157,22 @@ fi
 ## Functions
 
 gen_password() {
-	if [[ gen_type -eq 1 ]]; then
+	if (( gen_type == 1 )); then
 		cat "$random_type" \
 		| tr -dc "$charset_range" \
 		| head -c $(( password_length * total_count ))
 	else
-		while [[ current_count -lt total_count ]]; do
+		for (( current_count = 0; current_count < total_count; current_count ++ )); do
 			cat "$random_type" \
 			| tr -dc "$charset_range" \
 			| head -c "$password_length"
-			(( current_count ++ ))
 		done
 	fi
 }
 
 ## Condition checks
 
-if [[ total_count -gt 1 ]]; then
+if (( total_count > 1 )); then
 	gen_password | fold -w "$password_length"
 	printf '\n'
 else
