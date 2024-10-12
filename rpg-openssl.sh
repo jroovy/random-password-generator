@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+scriptName="${0##*/}"
+
 help_message() {
 
 printf "
-$0 <length>
-$0 <options> <length>
+$scriptName <length>
+$scriptName <options> <length>
 
 Options:
   [ -c <num> | --count <num> ]   =  Generate N number of passwords
@@ -29,10 +31,10 @@ Character ranges:
 Examples:
 
 Generate a 64-character length password
-$0 64
+$scriptName 64
 
 Generate 100 hexadecimal (lowercase) passwords of 64-character length
-$0 -d1o -c100 64
+$scriptName -d1o -c100 64
 
 "
 
