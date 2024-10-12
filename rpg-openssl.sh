@@ -41,8 +41,7 @@ $0 -d1o -c100 64
 ARGS=$(getopt -n random_password_generator -l count:,range:,fast,help -o c:d:fh -- "$@")
 eval set -- "$ARGS"
 
-while :
-do
+while true; do
 	case "$1" in
 		'-c' | '--count')
 			re='^[0-9]+$'
@@ -134,7 +133,7 @@ if [[ -z $password_length ]]; then
 fi
 
 if [[ -z $charset_range ]]; then
-	charset_range='[:graph:]'
+	charset_range='[:alnum:]'
 fi
 
 if [[ -z $total_count ]]; then

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+scriptName="${0##*/}"
+
 help_message() {
 
 printf "
-$0 <length>
-$0 <options> <length>
+$scriptName <length>
+$scriptName <options> <length>
 
 Options:
   [ -c <num> | --count <num> ]   =  Generate N number of passwords
@@ -30,13 +32,13 @@ Character ranges:
 Examples:
 
 Generate a 64-character length password
-$0 64
+$scriptName 64
 
 Generate 100 hexadecimal (lowercase) passwords of 64-character length
-$0 -d1o -c100 64
+$scriptName -d1o -c100 64
 
 Generate a 64-character password using /dev/random instead of /dev/urandom
-$0 -r 64
+$scriptName -r 64
 
 "
 
@@ -45,8 +47,7 @@ $0 -r 64
 ARGS=$(getopt -n random_password_generator -l random,fast,count:,range:,help -o rfc:d:h -- "$@")
 eval set -- "$ARGS"
 
-while :
-do
+while true; do
 	case "$1" in
 		'-r' | '--random')
 			random_type='/dev/random'
@@ -147,7 +148,7 @@ if [[ -z $random_type ]]; then
 fi
 
 if [[ -z $charset_range ]]; then
-	charset_range='[:graph:]'
+	charset_range='[:alnum:]'
 fi
 
 if [[ -z $total_count ]]; then
@@ -167,7 +168,7 @@ gen_password() {
 			| tr -dc "$charset_range" \
 			| head -c "$password_length"
 		done
-	fi
+	fi 2> /dev/null
 }
 
 ## Condition checks
