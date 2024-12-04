@@ -3,44 +3,103 @@
 # This script is compatible with zsh
 # Replace 'bash' above with 'zsh'
 
-help_message() {
-echo "Types:
-   1  =  hexadecimal
-  1u  =  hexadecimal, uppercase
-  1o  =  hexadecimal, lowercase
-   2  =  alphanumeric
-  2u  =  alphanumeric, uppercase
-  2o  =  alphanumeric, lowercase
-   3  =  ascii
+scriptName="${0##*/}"
 
-Usage: $0 <type> <length> <count>
-Example: $0 2u 64 100"
+help_message() {
+echo "Options:
+  -t<type>
+    Type of characters included in generated password(s)
+      Types:
+        1   =  hexadecimal
+        1u  =  hexadecimal, uppercase
+        1o  =  hexadecimal, lowercase
+        2   =  alphanumeric
+        2u  =  alphanumeric, uppercase
+        2o  =  alphanumeric, lowercase
+        3   =  ascii
+  -l<integer>
+    Length of generated password(s)
+  -q<integer>
+    Quantity of generated password(s)
+  -h
+    This help message
+  -i
+    Show hidden help message
+
+Default parameters:
+  -t2, -l64, -q1
+
+Usage: $scriptName <options>
+Example: $scriptName -t2u -l64 -q10"
+}
+hidden_help() {
+echo "List of variables that can be passed to this script:
+  USE_SHELL=<bash|zsh>
+    Force use of a specific shell (bash or zsh)
+  THREADS=<integer>
+    Use # of system threads
+
+Default values:
+  USE_SHELL = prefer zsh if available
+  THREADS = available threads / 2
+
+Usage: <variables> $scriptName ...
+Example: USE_SHELL=zsh THREADS=2 $scriptName ..."
 }
 
+# https://linuxsimply.com/bash-scripting-tutorial/functions/script-argument/bash-getopts/
+while getopts 't:l:q:hi' flag; do
+	case $flag in
+		t)
+			Type=$OPTARG
+		;;
+		l)
+			Length=$OPTARG
+		;;
+		q)
+			Quantity=$OPTARG
+		;;
+		h)
+			help_message
+			exit
+		;;
+		i)
+			hidden_help
+			exit
+		;;
+	esac
+done
+
 if [[ -z $readyMT ]]; then
-	if [[ -z $3 ]]; then
-		help_message
-		exit
-	fi
-	
 	readyMT=1
-	
+	if [[ -z $Type ]]; then
+		Type=2
+	fi
+	if [[ -z $Length ]]; then
+		Length=64
+	fi
+	if [[ -z $Quantity ]]; then
+		Quantity=1
+	fi
+	if [[ -z $1 ]]; then
+		echo "Using default parameters; '$scriptName -h' for help"
+	fi
+
 	# https://stackoverflow.com/a/677212
 	if [[ -n $USE_SHELL ]]; then
-		useShell="$USE_SHELL"
-	elif command -v zsh > /dev/null; then
-		useShell='zsh'
-	elif command -v bash > /dev/null; then
-		useShell='bash'
+		useShell=$USE_SHELL
 	else
+		for i in zsh bash; do
+			if command -v $i > /dev/null; then
+				useShell=$i
+				break
+			fi
+		done
+	fi
+	if [[ -z $useShell ]]; then
 		echo "Bash and Zsh not found! Aborting."
 		exit
 	fi
-
-	# Assign user inputs to variables
-	Type=$1
-	Length=$2
-	Rows=$3
 
 	if [[ -z $THREADS ]]; then
 		# Get amount of threads on system
@@ -54,11 +113,11 @@ if [[ -z $readyMT ]]; then
 	fi
 
 	# Divide total rows by available threads
-	Slice=$(( Rows / Threads ))
+	Slice=$(( Quantity / Threads ))
 
 	# If total rows is odd,
 	# assign remainder to last thread
-	Remainder=$(( Rows % Threads ))
+	Remainder=$(( Quantity % Threads ))
 	lastThread=$(( Threads - 1 ))
 
 	# Export required variables
@@ -73,11 +132,10 @@ if [[ -z $readyMT ]]; then
 			# https://askubuntu.com/a/385532
 			(( Slice += Remainder ))
 		fi
+		"$useShell" "$0" $Type $Length $Slice &
+
 		# Reinitialize seed to prevent duplicate output
-		if [[ "$useShell" == zsh ]]; then
-			zsh -c 'echo $RANDOM' > /dev/null
-		fi
-		$useShell "$0" $Type $Length $Slice &
+		"$useShell" -c 'echo $RANDOM' > /dev/null
 	done; wait
 else
 	# https://unix.stackexchange.com/questions/38172/are-all-bash-scripts-compatible-with-zsh
@@ -87,7 +145,7 @@ else
 
 	Type=$1
 	Length=$2
-	Rows=$3
+	Quantity=$3
 
 	# Base arrays of characters
 	numeric=(
@@ -133,7 +191,7 @@ else
 	esac; arrayLength=${#charArray[@]}
 
 	# Main generation function
-	for (( rowLoop = 0; rowLoop < Rows; rowLoop ++ )); do
+	for (( rowLoop = 0; rowLoop < Quantity; rowLoop ++ )); do
 		for (( lengthLoop = 0; lengthLoop < Length; lengthLoop ++ )); do
 			tempLength+=${charArray[ (( RANDOM % arrayLength )) ]}
 		done
